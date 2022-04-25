@@ -1,6 +1,8 @@
 import os;
+TOTAL_CLASSES = 2;
 PATH_TO_IMAGE = "sampleDataset/";
 PATH_TO_MASK = "sampleMask/";
+PATH_TO_ANNOTATIONS = "crackDataset_json.json";
 PATH_TO_SAVE_IMAGES = "sampleAugumentation/images";
 PATH_TO_SAVE_MASKS = "sampleAugumentation/masks";
 if (not os.path.exists(PATH_TO_SAVE_IMAGES)):

@@ -3,10 +3,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 import json
 import os
-PathToImag = "sampleDataset/"
-PathToAnnotation = "crackDataset_json.json"
-TotalClasses = 2;
-PathToSave = "sampleMask/";
+import config
+
+PathToImag = config.PATH_TO_IMAGE;#"sampleDataset/";
+PathToAnnotation = config.PATH_TO_ANNOTATIONS;
+TotalClasses = config.TOTAL_CLASSES;
+PathToSave = config.PATH_TO_MASK;
 
 f = open(PathToAnnotation)
 dict_t= json.load(f);
@@ -29,10 +31,10 @@ for x in dict_t:
         #print(color)
         cv2.fillPoly(Canvas,pts = [points], color = (color));
         #print(type(classReg), type(classNo));
-    #plt.imshow(OriginalImage)
-    #plt.show()
-    #plt.imshow(Canvas)
-    #plt.show()
+    plt.imshow(OriginalImage)
+    plt.show()
+    plt.imshow(Canvas)
+    plt.show()
     cv2.imwrite(os.path.join(PathToSave,filename),Canvas);
     #xPoint = dict_t[x]["shape_attributes"]["all_points_x"]
 
