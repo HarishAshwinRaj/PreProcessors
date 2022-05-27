@@ -14,7 +14,7 @@ AugLabel = ['horizontalFlip','verticalFilp', 'channelShuffle']
 def augument(PATH_TO_SAVE_IMAGE = config.PATH_TO_SAVE_IMAGE,
              PATH_TO_SAVE_MASK = config.PATH_TO_SAVE_MASK,
              PATH_TO_SAVE_AUG_IMAGES = config.PATH_TO_SAVE_AUG_IMAGES,
-             PATH_TO_SAVE_AUG_MASKS = config.PATH_TO_SAVE_AUG_IMAGES
+             PATH_TO_SAVE_AUG_MASKS = config.PATH_TO_SAVE_AUG_MASKS
             ):
     files = os.listdir(PATH_TO_SAVE_IMAGE);
 
