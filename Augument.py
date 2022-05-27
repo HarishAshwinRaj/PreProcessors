@@ -6,11 +6,10 @@ import matplotlib.pyplot as plt
 
 transformA = A.Compose([A.HorizontalFlip(p=1), A.GaussianBlur(),A.RandomBrightnessContrast(p = 0.5)])
 transformB = A.Compose([A.VerticalFlip(p = 1),A.GaussianBlur(),A.RandomBrightnessContrast(p = 0.5)])
-transformC = A.Compose([A.RandomBrightnessContrast(p = 0.5), A.GaussianBlur(), A.RandomCrop(width=256, height=256, p = 1)])
 transformD = A.Compose([A.RandomBrightnessContrast(p = 0.5), A.GaussianBlur(), A.ChannelShuffle( p = 1)])
 
-transforms = [transformA, transformB, transformC, transformD]
-AugLabel = ['horizontalFlip','verticalFilp', 'randomCrop', 'channelShuffle']
+transforms = [transformA, transformB, transformD]
+AugLabel = ['horizontalFlip','verticalFilp', 'channelShuffle']
 
 def augument(PATH_TO_SAVE_IMAGE = config.PATH_TO_SAVE_IMAGE,
              PATH_TO_SAVE_MASK = config.PATH_TO_SAVE_MASK,
