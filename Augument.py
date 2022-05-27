@@ -4,40 +4,55 @@ import config
 import os
 import matplotlib.pyplot as plt 
 
-transform = A.Compose([
-    
-    A.HorizontalFlip(p=1),
-    A.VerticalFlip(p = 1),
-    A.RandomBrightnessContrast(p=0.2),
-])
+transformA = A.Compose([A.HorizontalFlip(p=1), A.GaussianBlur(),A.RandomBrightnessContrast(p = 0.5)])
+transformB = A.Compose([A.VerticalFlip(p = 1),A.GaussianBlur(),A.RandomBrightnessContrast(p = 0.5)])
+transformC = A.Compose([A.RandomBrightnessContrast(p = 0.5), A.GaussianBlur(), A.RandomCrop(width=256, height=256, p = 1)])
+transformD = A.Compose([A.RandomBrightnessContrast(p = 0.5), A.GaussianBlur(), A.ChannelShuffle( p = 1)])
 
-files = os.listdir(config.PATH_TO_SAVE_IMAGE);
+transforms = [transformA, transformB, transformC, transformD]
+AugLabel = ['horizontalFlip','verticalFilp', 'randomCrop', 'channelShuffle']
 
-for file in files:
-    fullpath = os.path.join(config.PATH_TO_SAVE_IMAGE,file);
-    imageArray = cv2.imread(fullpath);
-    imageArray = cv2.cvtColor(imageArray, cv2.COLOR_BGR2RGB);
+def augument(PATH_TO_SAVE_IMAGE = config.PATH_TO_SAVE_IMAGE,
+             PATH_TO_SAVE_MASK = config.PATH_TO_SAVE_MASK,
+             PATH_TO_SAVE_AUG_IMAGES = config.PATH_TO_SAVE_AUG_IMAGES,
+             PATH_TO_SAVE_AUG_MASKS = config.PATH_TO_SAVE_AUG_IMAGES
+            ):
+    files = os.listdir(PATH_TO_SAVE_IMAGE);
 
-    fullpathmask = os.path.join(config.PATH_TO_SAVE_MASK,file);
-    maskArray = cv2.imread(fullpathmask)
+    for file in files:
+        fullpath = os.path.join(PATH_TO_SAVE_IMAGE,file);
+        imageArray = cv2.imread(fullpath);
+        imageArray = cv2.cvtColor(imageArray, cv2.COLOR_BGR2RGB);
 
-    transformed= transform(image= imageArray, mask = maskArray);
-    transformed_image = transformed['image'];
-    transformed_mask = transformed['mask'];
+        fullpathmask = os.path.join(PATH_TO_SAVE_MASK,file);
+        maskArray = cv2.imread(fullpathmask)
 
-    # plt.imshow(imageArray);
-    # plt.show();
-    # plt.imshow(transformed_image);
-    # plt.show();
+        for label ,transform in zip(AugLabel,transforms):
+            transformed= transform(image= imageArray, mask = maskArray);
+            transformed_image = transformed['image'];
+            transformed_mask = transformed['mask'];
 
-    # plt.imshow(maskArray);
-    # plt.show();
-    # plt.imshow(transformed_mask);
-    # plt.show();
+            # plt.imshow(imageArray);
+            # plt.show();
+            # plt.imshow(transformed_image);
+            # plt.show();
 
-    cv2.imwrite(os.path.join(config.PATH_TO_SAVE_AUG_IMAGES,file),transformed_image);
-    cv2.imwrite(os.path.join(config.PATH_TO_SAVE_AUG_MASKS,file), transformed_mask );
+            # plt.imshow(maskArray);
+            # plt.show();
+            # plt.imshow(transformed_mask);
+            # plt.show();
 
+            filename = file;
+            filename = filename.split('.');
+            filename[0] = filename[0] + "_AUG_" + label;
+            filename = '.'.join(filename)
+            print(filename)
+
+            cv2.imwrite(os.path.join(PATH_TO_SAVE_AUG_IMAGES, filename),transformed_image);
+            cv2.imwrite(os.path.join(PATH_TO_SAVE_AUG_MASKS, filename), transformed_mask );
+
+if(__name__ == '__main__'):
+    augument();
 
 
     
