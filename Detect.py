@@ -35,7 +35,7 @@ def detect(PathToImag = config.PATH_TO_EXTRACT_IMAGE,
                 yPoints = np.array(reg["shape_attributes"]["all_points_y"])
                 classReg = reg["region_attributes"]["DEFECTS"] #radio
                 if(isinstance(classReg,dict) ):
-                    classReg = list(reg["region_attributes"]["DEFECTS"].keys() )[0]; #if checkbox
+                    classReg = "1"#list(reg["region_attributes"]["DEFECTS"].keys() )[0]; #if checkbox
                 points = np.stack([xPoints,yPoints], axis = -1);
                 #print()
                 classNo = int(classReg.strip());
