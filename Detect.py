@@ -11,7 +11,7 @@ def detect(PathToImag = config.PATH_TO_EXTRACT_IMAGE,
             PathToAnnotation = config.PATH_TO_ANNOTATIONS,
             TotalClasses = config.TOTAL_CLASSES,
             PathToSave = config.PATH_TO_SAVE_MASK,
-            printSample = 2
+            printSample = 2000
             ):
         f = open(PathToAnnotation)
         dict_t= json.load(f);
@@ -35,7 +35,16 @@ def detect(PathToImag = config.PATH_TO_EXTRACT_IMAGE,
                 yPoints = np.array(reg["shape_attributes"]["all_points_y"])
                 classReg = reg["region_attributes"]["DEFECTS"] #radio
                 if(isinstance(classReg,dict) ):
-                    classReg = "1"#list(reg["region_attributes"]["DEFECTS"].keys() )[0]; #if checkbox
+                    ObtainedLabels = reg["region_attributes"]["DEFECTS"]; #if checkbox
+                    print(ObtainedLabels);
+                    if len(ObtainedLabels) == 0:
+                        continue;
+                    else:
+                        
+                        ObtainedLabels = list(k  for k,v in reg["region_attributes"]["DEFECTS"].items() if(bool(v) == True) )
+                        classReg = ObtainedLabels[0]
+                    print("cls No",classReg)
+                    
                 points = np.stack([xPoints,yPoints], axis = -1);
                 #print()
                 classNo = int(classReg.strip());
@@ -52,6 +61,7 @@ def detect(PathToImag = config.PATH_TO_EXTRACT_IMAGE,
             
             cv2.imwrite(os.path.join(PathToSaveImg,filename),OriginalImage);
             cv2.imwrite(os.path.join(PathToSave,filename),Canvas);
+         
             #xPoint = dict_t[x]["shape_attributes"]["all_points_x"]
         print("Images Not Found :",notFoundCount)
 
