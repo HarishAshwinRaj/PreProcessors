@@ -11,7 +11,7 @@ def detect(PathToImag = config.PATH_TO_EXTRACT_IMAGE,
             PathToAnnotation = config.PATH_TO_ANNOTATIONS,
             TotalClasses = config.TOTAL_CLASSES,
             PathToSave = config.PATH_TO_SAVE_MASK,
-            printSample = 2000
+            printSample = config.PRINT_SAMPLE_COUNT
             ):
         f = open(PathToAnnotation)
         dict_t= json.load(f);

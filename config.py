@@ -1,5 +1,6 @@
 import os;
-TOTAL_CLASSES = 2;
+TOTAL_CLASSES = 2; 
+PRINT_SAMPLE_COUNT  = 20;
 PATH_TO_SET = "set3";
 PATH_TO_EXTRACT_IMAGE = PATH_TO_SET+"/RawData/Images";
 PATH_TO_SAVE_IMAGE = PATH_TO_SET+"/ProcessedData/Images";
