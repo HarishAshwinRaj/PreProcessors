@@ -11,6 +11,7 @@ def detect(PathToImag = config.PATH_TO_EXTRACT_IMAGE,
             PathToAnnotation = config.PATH_TO_ANNOTATIONS,
             TotalClasses = config.TOTAL_CLASSES,
             PathToSave = config.PATH_TO_SAVE_MASK,
+            ImageSize = config.IMG_DIM,
             printSample = config.PRINT_SAMPLE_COUNT
             ):
         f = open(PathToAnnotation)
@@ -59,8 +60,8 @@ def detect(PathToImag = config.PATH_TO_EXTRACT_IMAGE,
                 plt.show()
                 sampleCount += 1
             
-            cv2.imwrite(os.path.join(PathToSaveImg,filename),OriginalImage);
-            cv2.imwrite(os.path.join(PathToSave,filename),Canvas);
+            cv2.imwrite(os.path.join(PathToSaveImg,filename),cv2.resize(OriginalImage,ImageSize));
+            cv2.imwrite(os.path.join(PathToSave,filename),cv2.resize(Canvas, ImageSize));
          
             #xPoint = dict_t[x]["shape_attributes"]["all_points_x"]
         print("Images Not Found :",notFoundCount)
