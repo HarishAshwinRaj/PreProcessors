@@ -52,16 +52,23 @@ def detect(PathToImag = config.PATH_TO_EXTRACT_IMAGE,
                 color = int(round((classNo * 255)/TotalClasses));
                 #print(color)
                 cv2.fillPoly(Canvas,pts = [points], color = (color));
-                #print(type(classReg), type(classNo));
+                #print(type(classReg), type(classNo));         
             if (sampleCount < printSample):
                 plt.imshow(OriginalImage)
                 plt.show()
                 plt.imshow(Canvas)
                 plt.show()
                 sampleCount += 1
-            
+            filename  = filename.split(".")[0]+".png"
+            print(filename);
             cv2.imwrite(os.path.join(PathToSaveImg,filename),cv2.resize(OriginalImage,ImageSize));
-            cv2.imwrite(os.path.join(PathToSave,filename),cv2.resize(Canvas, ImageSize));
+            cv2.imwrite(os.path.join(PathToSave,filename), cv2.resize(Canvas,ImageSize, 0, 0, interpolation = cv2.INTER_NEAREST));#cv2.resize(Canvas, ImageSize));
+           
+
+            #savedMask = cv2.imread( os.path.join(PathToSave,filename))
+            #print(np.unique(savedMask).shape)
+            #print("resized image",np.unique(cv2.resize(Canvas,ImageSize, 0, 0, interpolation = cv2.INTER_NEAREST)).shape);
+
          
             #xPoint = dict_t[x]["shape_attributes"]["all_points_x"]
         print("Images Not Found :",notFoundCount)

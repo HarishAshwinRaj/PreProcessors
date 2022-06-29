@@ -1,5 +1,5 @@
 import os;
-TOTAL_CLASSES = 2; 
+TOTAL_CLASSES = 9; 
 PRINT_SAMPLE_COUNT  = 20;
 IMG_DIM = (512,512);
 PATH_TO_SET = "set3";
