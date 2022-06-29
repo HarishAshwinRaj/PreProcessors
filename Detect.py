@@ -4,7 +4,7 @@ import numpy as np
 import json
 import os
 import config
-
+import sys
 
 def detect(PathToImag = config.PATH_TO_EXTRACT_IMAGE,
             PathToSaveImg = config.PATH_TO_SAVE_IMAGE,
@@ -17,6 +17,7 @@ def detect(PathToImag = config.PATH_TO_EXTRACT_IMAGE,
         f = open(PathToAnnotation)
         dict_t= json.load(f);
         print("total no of files ",len(dict_t));
+        print("No of Classes ",TotalClasses);
         notFoundCount = 0
         sampleCount = 0
         for x in dict_t:
@@ -75,8 +76,10 @@ def detect(PathToImag = config.PATH_TO_EXTRACT_IMAGE,
         print("Images Not Found :",notFoundCount)
 
 if(__name__ == '__main__'):
-    detect();
-
+    if(len(sys.argv)  > 1) :
+        detect(TotalClasses = int(sys.argv[1]));
+    else :
+        detect();
 
 
 
