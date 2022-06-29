@@ -31,7 +31,7 @@ def detect(PathToImag = config.PATH_TO_EXTRACT_IMAGE,
             Canvas_size = OriginalImage.shape[:2];
             #print(Canvas_size)
             Canvas = np.zeros(Canvas_size);
-            interval = int(round(255/TotalClasses));
+            interval = int((255/TotalClasses));
             #print(filename);
             for reg in dict_t[x]["regions"]:
                 xPoints = np.array(reg["shape_attributes"]["all_points_x"])
@@ -67,8 +67,8 @@ def detect(PathToImag = config.PATH_TO_EXTRACT_IMAGE,
             cv2.imwrite(os.path.join(PathToSave,filename), cv2.resize(Canvas,ImageSize, 0, 0, interpolation = cv2.INTER_NEAREST));#cv2.resize(Canvas, ImageSize));
            
 
-            #savedMask = cv2.imread( os.path.join(PathToSave,filename))
-            #print(np.unique(savedMask).shape)
+            savedMask = cv2.imread( os.path.join(PathToSave,filename))
+            print(np.unique(savedMask))
             #print("resized image",np.unique(cv2.resize(Canvas,ImageSize, 0, 0, interpolation = cv2.INTER_NEAREST)).shape);
 
          
