@@ -30,6 +30,7 @@ def detect(PathToImag = config.PATH_TO_EXTRACT_IMAGE,
             Canvas_size = OriginalImage.shape[:2];
             #print(Canvas_size)
             Canvas = np.zeros(Canvas_size);
+            interval = int(round(255/TotalClasses));
             #print(filename);
             for reg in dict_t[x]["regions"]:
                 xPoints = np.array(reg["shape_attributes"]["all_points_x"])
@@ -49,7 +50,7 @@ def detect(PathToImag = config.PATH_TO_EXTRACT_IMAGE,
                 points = np.stack([xPoints,yPoints], axis = -1);
                 #print()
                 classNo = int(classReg.strip());
-                color = int(round((classNo * 255)/TotalClasses));
+                color = int(classNo * interval);
                 #print(color)
                 cv2.fillPoly(Canvas,pts = [points], color = (color));
                 #print(type(classReg), type(classNo));         
