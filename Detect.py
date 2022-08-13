@@ -40,7 +40,7 @@ def detect(PathToImag = config.PATH_TO_EXTRACT_IMAGE,
                 yPoints = np.array(reg["shape_attributes"]["all_points_y"])
                 color = 0;
 
-                if "region_attributes" in reg  and "DEFECTS" in reg["region_attributes"].keys():
+                if "region_attributes" in reg  and "DEFECTS" in reg["region_attributes"].keys() and xPoints.shape[0] != 0 and yPoints.shape[0] != 0:
                     classReg = reg["region_attributes"]["DEFECTS"] #radio
                     if(isinstance(classReg,dict) ):
                         ObtainedLabels = reg["region_attributes"]["DEFECTS"]; #if checkbox
@@ -57,7 +57,7 @@ def detect(PathToImag = config.PATH_TO_EXTRACT_IMAGE,
                     #print()
                     classNo = int(classReg.strip());
                     color = int(classNo * interval);
-                    
+
                     #print(color)
                     cv2.fillPoly(Canvas,pts = [points], color = (color));
                     #print(type(classReg), type(classNo)); 
