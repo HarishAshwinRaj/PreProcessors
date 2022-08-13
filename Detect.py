@@ -57,13 +57,15 @@ def detect(PathToImag = config.PATH_TO_EXTRACT_IMAGE,
                     #print()
                     classNo = int(classReg.strip());
                     color = int(classNo * interval);
+                    
+                    #print(color)
+                    cv2.fillPoly(Canvas,pts = [points], color = (color));
+                    #print(type(classReg), type(classNo)); 
                 else :
                     print("NO LABEL PRESENT IN THE IMAGE", color);
                     noLabelCount  += 1
-
-                #print(color)
-                cv2.fillPoly(Canvas,pts = [points], color = (color));
-                #print(type(classReg), type(classNo));         
+                
+                        
             if (sampleCount < printSample):
                 plt.imshow(OriginalImage)
                 plt.show()
