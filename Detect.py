@@ -14,12 +14,14 @@ def detect(PathToImag = config.PATH_TO_EXTRACT_IMAGE,
             ImageSize = config.IMG_DIM,
             printSample = config.PRINT_SAMPLE_COUNT
             ):
+        print(PathToAnnotation)
         f = open(PathToAnnotation)
         dict_t= json.load(f);
         print("total no of files ",len(dict_t));
         print("No of Classes ",TotalClasses);
         notFoundCount = 0
         sampleCount = 0
+        noLabelCount = 0;
         for x in dict_t:
             filename = dict_t[x]["filename"]
             OriginalImage =cv2.imread(os.path.join(PathToImag,filename)) 
@@ -36,22 +38,29 @@ def detect(PathToImag = config.PATH_TO_EXTRACT_IMAGE,
             for reg in dict_t[x]["regions"]:
                 xPoints = np.array(reg["shape_attributes"]["all_points_x"])
                 yPoints = np.array(reg["shape_attributes"]["all_points_y"])
-                classReg = reg["region_attributes"]["DEFECTS"] #radio
-                if(isinstance(classReg,dict) ):
-                    ObtainedLabels = reg["region_attributes"]["DEFECTS"]; #if checkbox
-                    print(ObtainedLabels);
-                    if len(ObtainedLabels) == 0:
-                        continue;
-                    else:
+                color = 0;
+
+                if "region_attributes" in reg  and "DEFECTS" in reg["region_attributes"].keys():
+                    classReg = reg["region_attributes"]["DEFECTS"] #radio
+                    if(isinstance(classReg,dict) ):
+                        ObtainedLabels = reg["region_attributes"]["DEFECTS"]; #if checkbox
+                        print(ObtainedLabels);
+                        if len(ObtainedLabels) == 0:
+                            continue;
+                        else:
+                            
+                            ObtainedLabels = list(k  for k,v in reg["region_attributes"]["DEFECTS"].items() if(bool(v) == True) )
+                            classReg = ObtainedLabels[0]
+                        print("cls No",classReg)
                         
-                        ObtainedLabels = list(k  for k,v in reg["region_attributes"]["DEFECTS"].items() if(bool(v) == True) )
-                        classReg = ObtainedLabels[0]
-                    print("cls No",classReg)
-                    
-                points = np.stack([xPoints,yPoints], axis = -1);
-                #print()
-                classNo = int(classReg.strip());
-                color = int(classNo * interval);
+                    points = np.stack([xPoints,yPoints], axis = -1);
+                    #print()
+                    classNo = int(classReg.strip());
+                    color = int(classNo * interval);
+                else :
+                    print("NO LABEL PRESENT IN THE IMAGE", color);
+                    noLabelCount  += 1
+
                 #print(color)
                 cv2.fillPoly(Canvas,pts = [points], color = (color));
                 #print(type(classReg), type(classNo));         
@@ -71,9 +80,9 @@ def detect(PathToImag = config.PATH_TO_EXTRACT_IMAGE,
             print(np.unique(savedMask))
             #print("resized image",np.unique(cv2.resize(Canvas,ImageSize, 0, 0, interpolation = cv2.INTER_NEAREST)).shape);
 
-         
             #xPoint = dict_t[x]["shape_attributes"]["all_points_x"]
-        print("Images Not Found :",notFoundCount)
+        print("Images Not Found :", notFoundCount)
+        print("NOT LABELED REGIONS : ", noLabelCount)
 
 if(__name__ == '__main__'):
     if(len(sys.argv)  > 1) :
